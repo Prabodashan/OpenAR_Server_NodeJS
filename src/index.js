@@ -10,6 +10,7 @@ const {
   UserRoutes,
   UserTokenRoutes,
   CollectionRoutes,
+  ItemRoutes,
 } = require("./api/v1/routes");
 
 // ----------Global instances----------
@@ -37,8 +38,11 @@ app.use("/api/users", UserRoutes);
 // User token route
 app.use("/api/usertokens", UserTokenRoutes);
 
-// User token route
+// collection token route
 app.use("/api/collection", CollectionRoutes);
+
+// collection token route
+app.use("/api/item", ItemRoutes);
 
 // Error route
 app.use((req, res) => {

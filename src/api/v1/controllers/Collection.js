@@ -149,7 +149,7 @@ const DeleteCollectionById = async (req, res) => {
       });
     }
 
-    if (collection.userId !== id) {
+    if (collection.userId.toString() !== id) {
       return res.json({
         status: false,
         error: { message: "You can delete only your collection!!" },

@@ -19,6 +19,13 @@ const {
   GetCollectionById,
   DeleteCollectionById,
 } = require("./Collection");
+const {
+  CreateItem,
+  GetAllItemByUserId,
+  GetAllItemByCollectionId,
+  GetItemById,
+  DeleteItemById,
+} = require("./Item");
 
 // ----------Exports----------
 module.exports = {
@@ -36,4 +43,9 @@ module.exports = {
   GetAllCollectionByUserId,
   GetCollectionById,
   DeleteCollectionById,
+  CreateItem,
+  GetAllItemByUserId,
+  GetAllItemByCollectionId,
+  GetItemById,
+  DeleteItemById,
 };
