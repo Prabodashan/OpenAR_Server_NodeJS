@@ -7,6 +7,7 @@ const {
   LoginUser,
   GetAllUser,
   GetUserById,
+  DeleteUserById,
   ForgetPassword,
   ResetPassword,
 } = require("../controllers");
@@ -32,5 +33,13 @@ router.get("/all", AuthenticateUser, AuthorizeUser(["admin"]), GetAllUser);
 
 // Get user by id
 router.get("/:userId", AuthenticateUser, AuthorizeUser(["admin"]), GetUserById);
+
+// Delete user by id
+router.delete(
+  "/:userId",
+  AuthenticateUser,
+  AuthorizeUser(["admin"]),
+  DeleteUserById
+);
 
 module.exports = router;

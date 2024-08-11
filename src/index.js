@@ -6,7 +6,11 @@ require("dotenv/config");
 // ----------Custom libraries and modules----------
 const Configs = require("./configs");
 const { ConnectDatabase } = require("./api/v1/helpers");
-const { UserRoutes, UserTokenRoutes } = require("./api/v1/routes");
+const {
+  UserRoutes,
+  UserTokenRoutes,
+  CollectionRoutes,
+} = require("./api/v1/routes");
 
 // ----------Global instances----------
 const app = express();
@@ -32,6 +36,9 @@ app.use("/api/users", UserRoutes);
 
 // User token route
 app.use("/api/usertokens", UserTokenRoutes);
+
+// User token route
+app.use("/api/collection", CollectionRoutes);
 
 // Error route
 app.use((req, res) => {

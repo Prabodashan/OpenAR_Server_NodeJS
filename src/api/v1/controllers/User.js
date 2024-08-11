@@ -116,7 +116,7 @@ const LoginUser = async (req, res) => {
   const { emailAddress, password } = req.body;
 
   try {
-    // Check if email already exists
+    // Check if email exists
     const user = await UserModel.findOne({ emailAddress }).exec();
     if (!user) {
       return res.json({
@@ -177,7 +177,7 @@ const LoginUser = async (req, res) => {
 // ----------Conroller function to get users----------
 const GetAllUser = async (req, res) => {
   try {
-    const user = await UserModel.find().exec();
+    const user = await UserModel.find().select("-password").exec();
     return res.status(200).json({
       status: true,
       user,
@@ -202,7 +202,9 @@ const GetUserById = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const user = await UserModel.findOne({ _id: userId }).exec();
+    const user = await UserModel.findOne({ _id: userId })
+      .select("-password")
+      .exec();
     return res.status(200).json({
       status: true,
       user,
@@ -216,6 +218,42 @@ const GetUserById = async (req, res) => {
       status: false,
       error: {
         message: "Failed to fetch the user!",
+      },
+    });
+  }
+};
+
+// ----------Conroller function to delete user by id----------
+const DeleteUserById = async (req, res) => {
+  // Request parameters
+  const { userId } = req.params;
+
+  try {
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+      return res.json({
+        status: false,
+        error: { message: "User not found!" },
+      });
+    }
+    const deleteUser = await UserModel.findOneAndDelete({
+      _id: userId,
+    }).exec();
+
+    return res.status(200).json({
+      status: true,
+      user,
+      success: {
+        message: "User successfully deleted!",
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      status: false,
+      error: {
+        message: "Failed to delete the user!",
       },
     });
   }
@@ -318,6 +356,7 @@ module.exports = {
   LoginUser,
   GetAllUser,
   GetUserById,
+  DeleteUserById,
   ForgetPassword,
   ResetPassword,
 };

@@ -10,7 +10,7 @@ const GenerateTokens = (user) => {
     const payload = { id: user._id, userType: user.userType };
     // Generate access token
     const accessToken = jwt.sign(payload, Configs.JWT_ACCESS_KEY, {
-      expiresIn: "10m",
+      expiresIn: "1d",
     });
 
     // Generate refresh token
