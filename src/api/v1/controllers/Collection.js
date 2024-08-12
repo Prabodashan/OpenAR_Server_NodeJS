@@ -4,7 +4,6 @@ const mongoose = require("mongoose");
 
 // ----------Custom libraries and modules----------
 const { CollectionModel } = require("../models");
-const Configs = require("../../../configs");
 
 // ----------Conroller function to register new Collection----------
 const CreateCollection = async (req, res) => {

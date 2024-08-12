@@ -3,6 +3,7 @@ const UserRoutes = require("./User");
 const UserTokenRoutes = require("./UserToken");
 const CollectionRoutes = require("./Collection");
 const ItemRoutes = require("./Item");
+const FileRoutes = require("./File");
 
 // ----------Exports----------
 module.exports = {
@@ -10,4 +11,5 @@ module.exports = {
   UserTokenRoutes,
   CollectionRoutes,
   ItemRoutes,
+  FileRoutes,
 };

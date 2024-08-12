@@ -19,9 +19,18 @@ const ItemSchema = new mongoose.Schema(
       required: [true, "Please provide collection id"],
       ref: "Collection",
     },
+    status: {
+      type: String,
+      required: [true, "Please provide status"],
+      default: "created",
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       required: [true, "Please provide user id"],
+      ref: "User",
+    },
+    devId: {
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
   },

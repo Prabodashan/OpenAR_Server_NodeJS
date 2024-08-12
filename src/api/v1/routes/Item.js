@@ -14,10 +14,10 @@ const { AuthenticateUser, AuthorizeUser } = require("../middlewares");
 // Initialize the router
 const router = express.Router();
 
-// Create Collection
+// Create item
 router.post("/create", AuthenticateUser, AuthorizeUser(["user"]), CreateItem);
 
-// Get all user
+// Get all item
 router.get(
   "/all",
   AuthenticateUser,
@@ -25,7 +25,7 @@ router.get(
   GetAllItemByUserId
 );
 
-// Get user by id
+// Get item by id
 router.get(
   "/collection/:collectionId",
   AuthenticateUser,
@@ -33,8 +33,11 @@ router.get(
   GetAllItemByCollectionId
 );
 
-// Get user by id
+// Get item by id
 router.get("/:itemId", AuthenticateUser, AuthorizeUser(["user"]), GetItemById);
+
+// Update item by id
+router.put("/:itemId", AuthenticateUser, AuthorizeUser(["dev"]), GetItemById);
 
 // Delete user by id
 router.delete(

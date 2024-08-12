@@ -24,8 +24,10 @@ const {
   GetAllItemByUserId,
   GetAllItemByCollectionId,
   GetItemById,
+  UpdateItemById,
   DeleteItemById,
 } = require("./Item");
+const { uploadFile, downloadFile } = require("./File");
 
 // ----------Exports----------
 module.exports = {
@@ -47,5 +49,8 @@ module.exports = {
   GetAllItemByUserId,
   GetAllItemByCollectionId,
   GetItemById,
+  UpdateItemById,
   DeleteItemById,
+  uploadFile,
+  downloadFile,
 };

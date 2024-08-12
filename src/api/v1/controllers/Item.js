@@ -214,6 +214,59 @@ const GetItemById = async (req, res) => {
   }
 };
 
+// ----------Controller function to update status and devId----------
+const UpdateItemById = async (req, res) => {
+  const { status } = req.body;
+  const { itemId } = req.params;
+  const { id } = req.user; // Get devId from req.user
+
+  try {
+    // Check if the status field is empty
+    if (!status) {
+      return res.status(400).json({
+        status: false,
+        error: {
+          message: "Please provide a status.",
+        },
+      });
+    }
+
+    // Check if the item exists
+    const item = await ItemModel.findById(itemId).exec();
+    if (!item) {
+      return res.status(404).json({
+        status: false,
+        error: {
+          message: "Item not found.",
+        },
+      });
+    }
+
+    // Update the item
+    item.status = status;
+    item.devId = id; // Update devId from req.user
+
+    // Save the updated item to the database
+    const updatedItem = await item.save();
+
+    return res.status(200).json({
+      status: true,
+      item: updatedItem,
+      success: {
+        message: "Successfully updated item!",
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      status: false,
+      error: {
+        message: "Failed to update item!",
+      },
+    });
+  }
+};
+
 // ----------Conroller function to delete Item by id----------
 const DeleteItemById = async (req, res) => {
   // Request parameters
@@ -234,7 +287,14 @@ const DeleteItemById = async (req, res) => {
     if (item.userId.toString() !== id) {
       return res.json({
         status: false,
-        error: { message: "You can delete only your item!!" },
+        error: { message: "You can delete only your item!" },
+      });
+    }
+
+    if (item.status !== "created") {
+      return res.json({
+        status: false,
+        error: { message: "You can delete only your item before dev process!" },
       });
     }
 
@@ -264,5 +324,6 @@ module.exports = {
   GetAllItemByUserId,
   GetAllItemByCollectionId,
   GetItemById,
+  UpdateItemById,
   DeleteItemById,
 };
