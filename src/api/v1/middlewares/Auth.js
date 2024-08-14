@@ -3,42 +3,33 @@ const { VerifyTokens } = require("../helpers");
 
 // ----------Function to authenticate the user----------
 const AuthenticateUser = (req, res, next) => {
-  // Token header
-  const tokenHeader = req.headers.token;
+  
+  // Access token
+  const accessToken = req.cookies.token;
 
   try {
-    // Validate the token header
-    if (tokenHeader) {
-      const accessToken = tokenHeader.split("Bearer ")[1];
-      if (accessToken) {
-        // Verify access token
-        const verifiedToken = VerifyTokens(accessToken, "access");
-        if (!verifiedToken.status) {
-          return res.status(401).json({
-            status: false,
-            error: {
-              message: "Invalid access token!",
-            },
-          });
-        }
-
-        // Add user to the request
-        req.user = verifiedToken.tokenDetails;
-        return next();
+    // Validate the access token
+    if (accessToken) {
+      // Verify access token
+      const verifiedToken = VerifyTokens(accessToken, "access");
+      if (!verifiedToken.status) {
+        return res.status(401).json({
+          status: false,
+          error: {
+            message: "Invalid access token!",
+          },
+        });
       }
 
-      return res.status(401).json({
-        status: false,
-        error: {
-          message: "Access token must be properly provided!",
-        },
-      });
+      // Add user to the request
+      req.user = verifiedToken.tokenDetails;
+      return next();
     }
 
     return res.status(401).json({
       status: false,
       error: {
-        message: "Token header must be provided!",
+        message: "Access token must be properly provided!",
       },
     });
   } catch (err) {

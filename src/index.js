@@ -2,6 +2,7 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv/config");
+const cookieParser = require("cookie-parser");
 
 // ----------Custom libraries and modules----------
 const Configs = require("./configs");
@@ -27,6 +28,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 // Accept json
 app.use(express.json());
+
+app.use(cookieParser());
 
 // Base route
 app.get("/", (req, res) => {

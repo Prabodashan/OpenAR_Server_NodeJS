@@ -2,6 +2,7 @@
 const {
   CreateUser,
   LoginUser,
+  LogoutUser,
   GetAllUser,
   GetUserById,
   DeleteUserById,
@@ -33,6 +34,7 @@ const { uploadFile, downloadFile } = require("./File");
 module.exports = {
   CreateUser,
   LoginUser,
+  LogoutUser,
   GetAllUser,
   GetUserById,
   DeleteUserById,

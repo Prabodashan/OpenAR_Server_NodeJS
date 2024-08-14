@@ -5,6 +5,7 @@ const express = require("express");
 const {
   CreateUser,
   LoginUser,
+  LogoutUser,
   GetAllUser,
   GetUserById,
   DeleteUserById,
@@ -21,6 +22,9 @@ router.post("/create", AuthenticateUser, AuthorizeUser(["admin"]), CreateUser);
 
 // Login user
 router.post("/login", LoginUser);
+
+// logout user
+router.post("/logout", LogoutUser);
 
 // forget Password user
 router.post("/forget-password", ForgetPassword);

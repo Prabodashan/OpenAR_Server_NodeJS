@@ -4,8 +4,8 @@ const { GenerateTokens, VerifyTokens } = require("../helpers");
 
 // ----------Conroller function to generate new access token----------
 const GenerateAccessToken = async (req, res) => {
-  // Request body
-  const { refreshToken } = req.body;
+  // refresh token
+  const refreshToken = req.cookies.refreshToken;
 
   try {
     // Check if refresh token doesn't exists
@@ -13,25 +13,31 @@ const GenerateAccessToken = async (req, res) => {
       token: refreshToken,
     }).exec();
     if (!userToken) {
-      return res.status(400).json({
-        status: false,
-        refreshToken: null,
-        error: {
-          message: "Refresh token doesn't exists!",
-        },
-      });
+      return res
+        .clearCookie("token")
+        .clearCookie("refreshToken")
+        .status(400)
+        .json({
+          status: false,
+          error: {
+            message: "Refresh token doesn't exists!",
+          },
+        });
     }
 
     // Verify refresh token
     const verfiedToken = VerifyTokens(refreshToken, "refresh");
     if (!verfiedToken.status) {
-      return res.status(400).json({
-        status: false,
-        refreshToken: null,
-        error: {
-          message: "Invalid refresh token!",
-        },
-      });
+      return res
+        .clearCookie("token")
+        .clearCookie("refreshToken")
+        .status(400)
+        .json({
+          status: false,
+          error: {
+            message: "Invalid refresh token!",
+          },
+        });
     }
 
     // Generate a new access token
@@ -40,22 +46,33 @@ const GenerateAccessToken = async (req, res) => {
       userType: verfiedToken.tokenDetails.userType,
     });
     if (generatedTokens.status) {
-      return res.status(201).json({
-        status: true,
-        accessToken: generatedTokens.accessToken,
-        success: {
-          message: "Successfully created a new access token!",
-        },
-      });
+      return res
+        .cookie("token", generatedTokens.accessToken, {
+          httpOnly: true,
+          // secure:true,
+          // maxAge: age,
+        })
+        .status(201)
+        .json({
+          status: true,
+          accessToken: generatedTokens.accessToken,
+          success: {
+            message: "Successfully created a new access token!",
+          },
+        });
     }
   } catch (err) {
     console.log(err);
-    return res.status(500).json({
-      status: false,
-      error: {
-        message: "Failed to generate a new access token!",
-      },
-    });
+    return res
+      .clearCookie("token")
+      .clearCookie("refreshToken")
+      .status(500)
+      .json({
+        status: false,
+        error: {
+          message: "Failed to generate a new access token!",
+        },
+      });
   }
 };
 

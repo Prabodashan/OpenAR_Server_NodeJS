@@ -153,16 +153,26 @@ const LoginUser = async (req, res) => {
     // Save new refresh token record to the database
     await newToken.save();
 
-    return res.status(201).json({
-      status: true,
-      accessToken,
-      refreshToken,
-      userId: user._id,
-      userType: user.userType,
-      success: {
-        message: "Successfully logged in the user!",
-      },
-    });
+    return res
+      .cookie("token", accessToken, {
+        httpOnly: true,
+        // secure:true,
+        // maxAge: age,
+      })
+      .cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        // secure:true,
+        // maxAge: age,
+      })
+      .status(201)
+      .json({
+        status: true,
+        userId: user._id,
+        userType: user.userType,
+        success: {
+          message: "Successfully logged in the user!",
+        },
+      });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
@@ -172,6 +182,15 @@ const LoginUser = async (req, res) => {
       },
     });
   }
+};
+
+const LogoutUser = (req, res) => {
+
+  res
+    .clearCookie("token")
+    .clearCookie("refreshToken")
+    .status(200)
+    .json({ status: true, success: { message: "Logout Successful" } });
 };
 
 // ----------Conroller function to get users----------
@@ -354,6 +373,7 @@ const ResetPassword = async (req, res) => {
 module.exports = {
   CreateUser,
   LoginUser,
+  LogoutUser,
   GetAllUser,
   GetUserById,
   DeleteUserById,
