@@ -88,6 +88,30 @@ const CreateItem = async (req, res) => {
 };
 
 // ----------Conroller function to get Items----------
+const GetAllItem = async (req, res) => {
+  try {
+    const items = await ItemModel.findById("66b8abd42ead3d983b7b1597").exec();
+    console.log("Get ALL items", items);
+
+    return res.status(200).json({
+      status: true,
+      items,
+      success: {
+        message: "Successfully fetched all item!",
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      status: false,
+      error: {
+        message: "Failed to fetch the item!",
+      },
+    });
+  }
+};
+
+// ----------Conroller function to get Items by userId----------
 const GetAllItemByUserId = async (req, res) => {
   const { id } = req.user;
   const objectId = new mongoose.Types.ObjectId(id);
@@ -321,6 +345,7 @@ const DeleteItemById = async (req, res) => {
 
 module.exports = {
   CreateItem,
+  GetAllItem,
   GetAllItemByUserId,
   GetAllItemByCollectionId,
   GetItemById,

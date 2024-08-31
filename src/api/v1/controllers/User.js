@@ -8,6 +8,8 @@ const { UserModel, UserTokenModel } = require("../models");
 const { GenerateTokens, SendEmail } = require("../helpers");
 const Configs = require("../../../configs");
 
+//test
+
 // ----------Conroller function to register new user----------
 const CreateUser = async (req, res) => {
   // Request body
@@ -185,7 +187,6 @@ const LoginUser = async (req, res) => {
 };
 
 const LogoutUser = (req, res) => {
-
   res
     .clearCookie("token")
     .clearCookie("refreshToken")

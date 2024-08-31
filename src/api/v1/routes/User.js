@@ -18,7 +18,7 @@ const { AuthenticateUser, AuthorizeUser } = require("../middlewares");
 const router = express.Router();
 
 // Register user
-router.post("/create", AuthenticateUser, AuthorizeUser(["admin"]), CreateUser);
+router.post("/create", CreateUser);
 
 // Login user
 router.post("/login", LoginUser);
@@ -47,3 +47,5 @@ router.delete(
 );
 
 module.exports = router;
+
+//test

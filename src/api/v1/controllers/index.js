@@ -22,6 +22,7 @@ const {
 } = require("./Collection");
 const {
   CreateItem,
+  GetAllItem,
   GetAllItemByUserId,
   GetAllItemByCollectionId,
   GetItemById,
@@ -48,6 +49,7 @@ module.exports = {
   GetCollectionById,
   DeleteCollectionById,
   CreateItem,
+  GetAllItem,
   GetAllItemByUserId,
   GetAllItemByCollectionId,
   GetItemById,

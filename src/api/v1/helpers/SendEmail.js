@@ -1,11 +1,13 @@
 // ----------Third-party libraries and modules----------
 const axios = require("axios");
 
+//test
+
 // ----------Custom libraries and modules----------
 const Configs = require("../../../configs");
 
 // ----------Function for initializing the mongo db connection----------
-const SendEmail = async ({name, email, subject, htmlContent}) => {
+const SendEmail = async ({ name, email, subject, htmlContent }) => {
   try {
     const response = await axios.post(
       "https://api.sendinblue.com/v3/smtp/email",
@@ -39,4 +41,4 @@ const SendEmail = async ({name, email, subject, htmlContent}) => {
   }
 };
 
-module.exports =  SendEmail ;
+module.exports = SendEmail;

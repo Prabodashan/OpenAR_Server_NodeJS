@@ -4,6 +4,7 @@ const express = require("express");
 // ----------Custom libraries & modules----------
 const {
   CreateItem,
+  GetAllItem,
   GetAllItemByUserId,
   GetAllItemByCollectionId,
   GetItemById,
@@ -18,8 +19,11 @@ const router = express.Router();
 router.post("/create", AuthenticateUser, AuthorizeUser(["user"]), CreateItem);
 
 // Get all item
+router.get("/all", GetAllItem);
+
+// Get all item
 router.get(
-  "/all",
+  "/all/user",
   AuthenticateUser,
   AuthorizeUser(["user"]),
   GetAllItemByUserId
