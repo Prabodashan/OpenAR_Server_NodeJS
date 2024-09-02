@@ -9,6 +9,7 @@ const {
   GetAllItemByCollectionId,
   GetItemById,
   DeleteItemById,
+  UpdateItemById,
 } = require("../controllers");
 const { AuthenticateUser, AuthorizeUser } = require("../middlewares");
 
@@ -38,10 +39,20 @@ router.get(
 );
 
 // Get item by id
-router.get("/:itemId", AuthenticateUser, AuthorizeUser(["user"]), GetItemById);
+router.get(
+  "/:itemId",
+  AuthenticateUser,
+  AuthorizeUser(["user", "dev"]),
+  GetItemById
+);
 
 // Update item by id
-router.put("/:itemId", AuthenticateUser, AuthorizeUser(["dev"]), GetItemById);
+router.put(
+  "/:itemId",
+  AuthenticateUser,
+  AuthorizeUser(["dev"]),
+  UpdateItemById
+);
 
 // Delete user by id
 router.delete(

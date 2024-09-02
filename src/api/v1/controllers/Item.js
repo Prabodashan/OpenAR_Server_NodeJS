@@ -90,12 +90,27 @@ const CreateItem = async (req, res) => {
 // ----------Conroller function to get Items----------
 const GetAllItem = async (req, res) => {
   try {
-    const items = await ItemModel.findById("66b8abd42ead3d983b7b1597").exec();
-    console.log("Get ALL items", items);
+    const items = await ItemModel.find()
+      .populate({
+        path: "userId",
+        select: "fullName phoneNumber", // Select specific fields from the Collection schema
+      })
+      .exec();
+
+    const item = items.map((data) => ({
+      _id: data._id,
+      name: data.name,
+      description: data.description,
+      file: data.file,
+      status: data.status,
+      userId: data.userId._id,
+      userName: data.userId.fullName,
+      userPhoneNumber: data.userId.phoneNumber,
+    }));
 
     return res.status(200).json({
       status: true,
-      items,
+      item,
       success: {
         message: "Successfully fetched all item!",
       },
@@ -129,6 +144,7 @@ const GetAllItemByUserId = async (req, res) => {
       name: data.name,
       description: data.description,
       file: data.file,
+      status: data.status,
       collectionId: data.collectionId._id,
       collectionName: data.collectionId.name,
       collectionDescription: data.collectionId.description,
@@ -207,6 +223,10 @@ const GetItemById = async (req, res) => {
         path: "collectionId",
         select: "name description", // Select specific fields from the Collection schema
       })
+      .populate({
+        path: "userId", // Replace "userId" with the actual field name in your schema that references the User model
+        select: "fullName emailAddress phoneNumber", // Select specific fields from the User schema
+      })
       .exec();
 
     const item = {
@@ -214,10 +234,14 @@ const GetItemById = async (req, res) => {
       name: items.name,
       description: items.description,
       file: items.file,
+      status: items.status,
       collectionId: items.collectionId._id,
       collectionName: items.collectionId.name,
       collectionDescription: items.collectionId.description,
-      userId: items.userId,
+      userId: items.userId._id,
+      fullName: items.userId.fullName,
+      emailAddress: items.userId.emailAddress,
+      phoneNumber: items.userId.phoneNumber,
     };
 
     return res.status(200).json({
@@ -243,6 +267,8 @@ const UpdateItemById = async (req, res) => {
   const { status } = req.body;
   const { itemId } = req.params;
   const { id } = req.user; // Get devId from req.user
+
+  console.log("first update");
 
   try {
     // Check if the status field is empty
