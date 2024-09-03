@@ -188,6 +188,7 @@ const GetAllItemByCollectionId = async (req, res) => {
       name: data.name,
       description: data.description,
       file: data.file,
+      status: data.status,
       collectionId: data.collectionId._id,
       collectionName: data.collectionId.name,
       collectionDescription: data.collectionId.description,
@@ -227,6 +228,10 @@ const GetItemById = async (req, res) => {
         path: "userId", // Replace "userId" with the actual field name in your schema that references the User model
         select: "fullName emailAddress phoneNumber", // Select specific fields from the User schema
       })
+      .populate({
+        path: "devId", // Replace "userId" with the actual field name in your schema that references the User model
+        select: "fullName emailAddress phoneNumber", // Select specific fields from the User schema
+      })
       .exec();
 
     const item = {
@@ -242,6 +247,10 @@ const GetItemById = async (req, res) => {
       fullName: items.userId.fullName,
       emailAddress: items.userId.emailAddress,
       phoneNumber: items.userId.phoneNumber,
+      devId: items.devId ? items.devId._id : null,
+      devFullName: items.devId ? items.devId.fullName : null,
+      devEmailAddress: items.devId ? items.devId.emailAddress : null,
+      devPhoneNumber: items.devId ? items.devId.phoneNumber : null,
     };
 
     return res.status(200).json({
@@ -267,8 +276,6 @@ const UpdateItemById = async (req, res) => {
   const { status } = req.body;
   const { itemId } = req.params;
   const { id } = req.user; // Get devId from req.user
-
-  console.log("first update");
 
   try {
     // Check if the status field is empty
