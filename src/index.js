@@ -31,6 +31,11 @@ app.use(express.json());
 
 app.use(cookieParser());
 
+app.use(express.static("static"));
+
+// Allow access uploads folder
+app.use("/uploads", express.static("./uploads/"));
+
 // Base route
 app.get("/", (req, res) => {
   res.status(200).json({ success: { message: `Welcome to the server!` } });
@@ -50,6 +55,10 @@ app.use("/api/item", ItemRoutes);
 
 // collection token route
 app.use("/api/file", FileRoutes);
+
+app.use((req, res) => {
+  res.render("/static");
+});
 
 // Error route
 app.use((req, res) => {
