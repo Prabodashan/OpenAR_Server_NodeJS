@@ -34,7 +34,7 @@ app.use(cookieParser());
 app.use(express.static("static"));
 
 // Allow access uploads folder
-app.use("/uploads", express.static("./uploads/"));
+app.use("/uploads/assest", express.static("./uploads/assest"));
 
 // Base route
 app.get("/", (req, res) => {
